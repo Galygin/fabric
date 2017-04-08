@@ -36,14 +36,22 @@ namespace fabric
 
         class ConstGenerator : IGenerator
         {
-            int a = i;
-            public int Next { get { return a; } }
+            private int _a;
+            public int Next { get { return _a; } }
+            public ConstGenerator(int init = 0)
+            {
+                int _a = init;
+            }
         }
 
         class CounterGenerator : IGenerator
         {
-            int a = i;
-            public int Next { get { a++; return a; } }
+            private int _a;
+            public int Next { get {  return _a++; } }
+            public CounterGenerator(int init = 0)
+            {
+                int _a = init;
+            }
         }
 
         class ConstGeneratorFabric : IGeneratorFabric
