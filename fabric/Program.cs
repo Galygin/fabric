@@ -8,19 +8,24 @@ namespace fabric
 {
     class Program
     {
-        public static int i = 1;
-
         static void Main(string[] args)
         {
+            int I;
+            Console.Write(@"Type in integer value: ");
+
+            while (!int.TryParse(Console.ReadLine(), out I))
+            {
+                /*Do nothing*/
+            }
             CounterGeneratorFabric Faba = new CounterGeneratorFabric();
             ConstGeneratorFabric Fabb = new ConstGeneratorFabric();
-            IGenerator gena = Faba.FactoryMethod();
-            IGenerator genb = Fabb.FactoryMethod();
-            int k = 0;
-            while (k != 27)
+            IGenerator gena = Faba.FactoryMethod(I);
+            IGenerator genb = Fabb.FactoryMethod(I);
+
+            while (true)
             {
-                k = Console.Read();
-                Console.WriteLine("{0}", gena.Next);
+                Console.WriteLine("{0}", genb.Next);
+                Console.ReadKey();
             }
         }
 
@@ -31,42 +36,47 @@ namespace fabric
 
         interface IGeneratorFabric
         {
-            IGenerator FactoryMethod();
+            IGenerator FactoryMethod(int init);
         }
 
         class ConstGenerator : IGenerator
         {
             private int _a;
-            public int Next { get { return _a; } }
+
+            public int Next => _a;
+
             public ConstGenerator(int init = 0)
             {
-                int _a = init;
+                _a = init;
             }
         }
 
         class CounterGenerator : IGenerator
         {
             private int _a;
-            public int Next { get {  return _a++; } }
+
+            public int Next => ++_a;
+
             public CounterGenerator(int init = 0)
             {
-                int _a = init;
+                _a = init;
             }
         }
 
         class ConstGeneratorFabric : IGeneratorFabric
         {
-            public IGenerator FactoryMethod()
+            public IGenerator FactoryMethod(int init)
             {
-                return new ConstGenerator();
+                return new ConstGenerator(init);
             }
         }
+
         class CounterGeneratorFabric : IGeneratorFabric
         {
-            public IGenerator FactoryMethod()
+            public IGenerator FactoryMethod(int init)
             {
-                  return new CounterGenerator(); 
-            }   
+                return new CounterGenerator(init);
+            }
         }
     }
 }
